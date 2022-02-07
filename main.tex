@@ -255,7 +255,7 @@ Ignoring the cost of the rollouts themselves, $k$ limited lookahead approaches f
 take $O(k|S|^2|A|)$ computation, while POMDPs take $O((|O||A|)^k)$,
 replacing factors of $T$ with $k$.
 
-\section{Tree Search}
+\section{Monte Carlo Tree Search}
 Lookahead methods are a breadth-first method: viewing states and actions as nodes in a tree,
 lookahead methods exhaustively explore all states and actions up to depth $k$.
 Monte Carlo tree search (MCTS) methods, as well as
@@ -263,8 +263,29 @@ partially observable variants such as partially observable Monte Carlo planning 
 instead take a best-first strategy, expanding the most promising nodes
 then approximating their value.
 
-Best-first search relies on heuristic functions $f_{\text{select}}$ for selecting a node to expand
-and $f_{\text{expand}}$ for a child to expand from a selected node.
+Given a starting tree, MCTS relies on two heuristic policies: a tree and rollout policy.
+A simple example of a best-first policy would rely on heuristic estimates of the value function
+or $Q$-function for the tree policy,
+prioritizing the visitation of states that seem most promising.
+Compared to breadth-first, which uniformly assumes that nodes closest to the root are most valuable,
+best-first strategies may result in better solutions being found under the same
+computational budget (for example with at most $k$ nodes visited).
+
+Similar to limited lookahead methods, best-first relies on heuristic estimates
+$\tilde{V}(s)$ of the value function.
+Given a starting graph $G$, we must choose a node $n$ on the frontier of $G$, $\delta G$.
+The UCT algorithm uses the current value estimate $\tilde(V)(s) + f(s)$,
+where $f$ is a function based on visitation statistics that allow practitioners to trade off
+exploration and exploitation.
+Choosing a node is referred to as the selection phase of tree search.
+
+After selecting the most promising (best) node,
+a set of new child nodes are added to the tree in the expansion step.
+The simplest expansion step is to add a child of the selected node according to the rollout policy.
+The added nodes then have their values estimated via rollouts, called the simulation step.
+Finally, value information is backpropagated up the tree.
+
+\section{Symmetry in Tree Search}
 
 
 
