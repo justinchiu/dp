@@ -48,7 +48,7 @@ from the lens of dynamic programming / search.
 \end{abstract}
 
 \section{Problem Setup}
-The goal is to maximize expected rewards $\max_\pi \Es{a_{1:t},s_{1:t}\sim\pi}{\sum_{t=1}^T r(a_t, s_t)}$,
+The goal is to maximize expected rewards $\argmax_\pi \Es{a_{1:t},s_{1:t}\sim\pi}{\sum_{t=1}^T r(a_t, s_t)}$,
 where actions $a_t\in A$ come from our policy $\pi$,
 and states $s_t\in S$ may or may not be observable.
 If states are observed, then this process is known as a Markov decision process (MDP).
@@ -183,13 +183,13 @@ If all of $|A|,|S|,|O|$ are small, then exact computation of the best policy
 is feasible via dynamic programming.
 The goal is to maximize the expected utility under your policy,
 \begin{equation}
-    \max_\pi \Es{a_{1:t},s_{1:t}\sim\pi}{\sum_{t=1}^T r(a_t, s_t)}.
+    \argmax_\pi \Es{a_{1:t},s_{1:t}\sim\pi}{\sum_{t=1}^T r(a_t, s_t)}.
 \end{equation}
 To solve this exactly, we rely on the principle of optimality:
 that given a deterministic optimal policy $a^*_{1:T}$ from $\pi^*$ that solves the
 above equation, the solution of the ``cost-to-go'' subproblem,
 \begin{equation}
-    \max_{a_{k:T}} \E{\sum_{t=k}^T r(a_t, s_t)},
+    \argmax_{a_{k:T}} \E{\sum_{t=k}^T r(a_t, s_t)},
 \end{equation}
 is given by $a^*_{k:T}$ from $\pi^*$.
 This implies we can solve the original equation for the optimal policy by working backwards
